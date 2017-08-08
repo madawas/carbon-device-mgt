@@ -727,7 +727,19 @@ function attachDeviceEvents() {
                     displayDeviceErrors(jqXHR);
                 });
             } else {
-                removeDevices(deviceIdentifiers);
+                //removeDevices(deviceIdentifiers);
+                deviceIdentifiers.forEach(function (deviceIdentifier) {
+                    var serviceURL = "/api/device-mgt/" + deviceType + "/v1.0/admin/devices/enterprise-wipe";
+                    invokerUtil.post(serviceURL, deviceIdentifier.id, function (message) {
+                        $(modalPopupContent).html($('#remove-device-200-content').html());
+                        setTimeout(function () {
+                            hidePopup();
+                            location.reload(false);
+                        }, 2000);
+                    }, function (jqXHR) {
+                        displayDeviceErrors(jqXHR);
+                    });
+                });
             }
         });
 
